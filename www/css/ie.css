@@ -1,0 +1,5 @@
+img.png {behavior:url("/png.htc");}
+.header .search_tab td input.button, .right_column input.button, .right_column .catalog_list .price p.col input.buy, .right_column .goods_wrap .desc table td input.buy {padding-bottom:0;}
+.container .main_block .register_block table td span, .container .feedback_block table td span {margin-top:6px;}
+.container .main_block .register_block table td img, .container .feedback_block table td img {top:0;}
+.container .main_block .register_block table td input.button, .container .feedback_block table td input.button {margin-top:10px;}
