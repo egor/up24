@@ -14,7 +14,7 @@
  <table class="info">
      
   <tr>
-   <td class="noborder" colspan="2"><img src="/img/diamond2.gif" width="358" height="93" alt="" /></td>
+   <td class="noborder" colspan="2"><img src="/img{FOLDER}/diamond2.gif" width="358" height="93" alt="" /></td>
    <td class="right noborder"><span>Номер заказа: &nbsp; <span>{PRINT_ORDER_NUMBER}</span></span><br /><br /><span>Дата заказа:</span> &nbsp; <strong>{PRINT_ORDER_DATE}</strong></td>
   </tr>
   <tr>
@@ -65,7 +65,7 @@
  </table>
  <table class="fter">
   <tr>
-   <td><img src="/img/diamond.gif" width="362" height="20" alt="" /></td>
+   <td><img src="/img{FOLDER}/diamond.gif" width="362" height="20" alt="" /></td>
    <td>{PRINT_BOTTOM_ADRES}</td>
    <td class="right">{PRINT_BOTTOM_PHONES}</td>
   </tr>

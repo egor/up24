@@ -135,7 +135,7 @@ class Content extends Main_Abstract implements Main_Interface
             }
         }
         
-        $items = $this->db->fetchAll("SELECT * FROM `page` WHERE `level` = '$id' ORDER BY `position` DESC LIMIT $start, $num_pages");
+        $items = $this->db->fetchAll("SELECT * FROM `page` WHERE `level` = '$id' ORDER BY `position` LIMIT $start, $num_pages");
         
         if (!$items) {
             return true;
@@ -2502,11 +2502,15 @@ if ($_SESSION['show']=='desc'){
 /**///echo $row['country'];
 
                 $merc_sign = $site[2][$row['country']];//"X5bP9JQJauTARvht83xMKNLXY2qF";
+				//echo '<!--'.$merc_sign.'-->';
+				//echo '<!--'.$site[3][$row['country']].'-->';
+				//echo '<!--'.$row['summ'].'-->';
+				//echo '<!--'.$row['id'].'-->';
                 $xml = "<request>      
 		<version>1.2</version>
 		<merchant_id>".$site[3][$row['country']]."</merchant_id>
-		<result_url>http://".$site[0][$row['country']]."/discsucess</result_url>
-		<server_url>http://".$site[0][$row['country']]."/discconfirm.php</server_url>
+		<result_url>http://".$site[0]['ru']."/discsucess</result_url>
+		<server_url>http://".$site[0]['ru']."/discconfirm.php</server_url>
 		<order_id>ORDER_".$row['id']."</order_id>
 		<amount>".$row['summ']."</amount>
 		<currency>".$money[4][$row['country']]."</currency>
@@ -2598,7 +2602,8 @@ if ($_SESSION['show']=='desc'){
                     'PRINT_ORDER_DISC_ARTICUL' => $row['articul'],
                     'PRINT_ORDER_DISC_COST' => $row['cost'],
                     'PRINT_ORDER_DISC_COUNT' => $row['count'],
-                    'PRINT_ORDER_DISC_SUMM' => $row['summ']
+                    'PRINT_ORDER_DISC_SUMM' => $row['summ'],
+                    'MONEY3' => ($row['country']=='ua'?'грн.':'руб.')
                 )
             );
             $countDisc += $row['count'];
@@ -2622,10 +2627,20 @@ if ($_SESSION['show']=='desc'){
                 'PRINT_ORDER_TOTAL_SUMM' => $totalSumm,
                 'ADMIN_AMWAY_TEXT' => '',
                 'ADMIN_AMWAY_NUMBER' => '',
-                'DISC3'=>$countDisc.' шт.'
+                'DISC3'=>$countDisc.' шт.',
+                'FOLDER'=>($order['country']=='ua'?'/ua':''),
+                'MONEY3' => ($order['country']=='ua'?'грн.':'руб.')
+                
             )
         );
-        
+        if ($order['country']=='ua'){
+             $this->tpl->assign(
+            array(
+                
+                'PRINT_BOTTOM_PHONES' => '+3 063 798 00 79'
+            )
+        );
+        }
         return true;
 	}
 	

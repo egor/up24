@@ -3540,7 +3540,10 @@ class Admin extends Main_Abstract implements Main_Interface
                 'PRINT_ORDER_TOTAL_SUMM' => $totalSumm,
                 'ADMIN_AMWAY_TEXT' => '<br />Номер Amway:',
                 'ADMIN_AMWAY_NUMBER' => '<br />'.$order['number'],
-                'DISC3'=>$countDisc.' шт.'
+                'DISC3'=>$countDisc.' шт.',
+                'FOLDER'=>($order['country']=='ua'?'/ua':''),
+                'MONEY3' => ($order['country']=='ua'?'грн.':'руб.')
+
             )
         );
         
