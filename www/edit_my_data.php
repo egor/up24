@@ -1,4 +1,6 @@
-<?php echo toDB ("<script type=\"text/javascript\">
+<?php 
+session_start();
+echo toDB ("<script type=\"text/javascript\">
     $(document).ready(function() {
         $('.requiredField').live('blur',function() {
             if($(this).val() != ''){
