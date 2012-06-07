@@ -1,5 +1,5 @@
 <?php
-//session_start();
+session_start();
 define("PATH", $_SERVER['DOCUMENT_ROOT']."/");
 require_once PATH . 'Zend/Loader/Autoloader.php';
 $autoloader = Zend_Loader_Autoloader::getInstance();
@@ -47,10 +47,11 @@ if ($_POST['method']=='edit'){
             'phone'         => $phone,
             'fio'           => $fio,
             'passport_data' => $passport_data,
-            'add_info'      => $add_info
+            'add_info'      => $add_info,
+            'country'       =>  $_SESSION['countryDName'],
         );
         
-     $db->update('user_adr', $data, '`user_id`="'.$user_id.'" AND `slot`="'.$slot_id.'"');
+     $db->update('user_adr', $data, '`user_id`="'.$user_id.'" AND `slot`="'.$slot_id.'" AND `country`="'.$_SESSION['countryDName'].'"');
 
      echo toDB2('<div id="adr_md_'.$slot_id.'">
                 <a href="#" '.($form==1?'onClick="check_slot('.$slot_id.'); return false;"':'onClick="slot('.$slot_id.', \'edit\', 0)"').' name="">                    
@@ -93,7 +94,8 @@ elseif ($_POST['method']=='new') {
             'fio'           => $fio,
             'passport_data' => $passport_data,
             'add_info'      => $add_info,
-            'slot'          => $slot_id
+            'slot'          => $slot_id,
+            'country'       => $_SESSION['countryDName'],
         );
         $db->insert('user_adr', $data);
 
@@ -116,7 +118,7 @@ elseif ($_POST['method']=='new') {
                     </a>');
 }
 if (isset($_POST['id_delete'])){
-    $db->delete('user_adr', '`user_id`="'.$_POST['id_delete'].'" AND `slot`="'.$_POST['slot'].'"');
+    $db->delete('user_adr', '`user_id`="'.$_POST['id_delete'].'" AND `slot`="'.$_POST['slot'].'" AND `country`="'.$_SESSION['countryDName'].'"');
     echo 'Deleted!'.$_POST['id_delete'];
 }
 function toDB($value){

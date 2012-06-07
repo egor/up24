@@ -1,4 +1,5 @@
 <?php
+session_start();
 define("PATH", $_SERVER['DOCUMENT_ROOT']."/");
 require_once PATH . 'Zend/Loader/Autoloader.php';
 $autoloader = Zend_Loader_Autoloader::getInstance();
@@ -21,7 +22,7 @@ try {
 }
 $q = iconv('utf-8', 'windows-1251',trim($_GET['q']));
 //print $q."\n";
-$sq = $db->fetchAll("SELECT * FROM `info_delivery` WHERE `city` LIKE '$q%'");
+$sq = $db->fetchAll("SELECT * FROM `info_delivery` WHERE `city` LIKE '$q%' AND `country`='".$_SESSION['countryDName']."'");
         //print "SELECT * FROM `info_delivery` WHERE `city` LIKE '$q%'\n";
 if (!empty($sq)){
     foreach ($sq as $key) {

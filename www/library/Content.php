@@ -2217,7 +2217,7 @@ if ($_SESSION['show']=='desc'){
 	    //echo $_SESSION['countryDName']; die;
 	    $date = mktime();
 	    //echo $delivery['c_slots'];
-            $disc_data = $this->db->fetchRow("SELECT * FROM `user_adr` WHERE `user_id`='".$this->auth->id."' AND `slot` = '".$delivery['c_slots']."'");
+            $disc_data = $this->db->fetchRow("SELECT * FROM `user_adr` WHERE `user_id`='".$this->auth->id."' AND `slot` = '".$delivery['c_slots']."' AND `country`='".$_SESSION['countryDName']."'");
 	    $data = array(
 	       'date' => $date,
 	       'zip' => $disc_data['index'],
@@ -3050,9 +3050,12 @@ if ($_SESSION['show']=='desc'){
             'GLOBAL_FORM_ID'=>'<input type="hidden" id="global_form" name="global_form" value="'.($form=='form'?'1':'0').'">',
                 'ADR_1' => $adr,
                 'ADR_2' => $adr2,
-                'ADR_3' => $adr3
+                'ADR_3' => $adr3,
+                'CLASS_ACTIVE_RU'    =>  ($_SESSION['countryDName']=='ru'?' class="acrive"':' class="noacrive"'),
+                'CLASS_ACTIVE_UA'    =>  ($_SESSION['countryDName']=='ua'?' class="acrive"':' class="noacrive"'),
+
             ));
-        $listAdr = $this->db->fetchAll("SELECT * FROM `user_adr` WHERE `user_id` = '$user_id' ORDER BY `slot`");
+        $listAdr = $this->db->fetchAll("SELECT * FROM `user_adr` WHERE `user_id` = '$user_id' AND `country`='".$_SESSION['countryDName']."' ORDER BY `slot`");
         $i=0;
         if (!empty($listAdr)) {
             
