@@ -171,8 +171,8 @@ try {
 //------------------------------------------------------------------------------
 if ((isset($_GET['print_id']) and $_GET['print_id']!=0)){
     $user_id = $_GET['print_id']; $slot =$_GET['slot_id'];
-    $row = $db->fetchRow("SELECT * FROM `user_adr` WHERE (`user_id`='".$user_id."' AND `slot`='".$slot."')");
-    $rowCity = $db->fetchRow("SELECT * FROM `info_delivery` WHERE (`city`='".$row['city']."')");
+    $row = $db->fetchRow("SELECT * FROM `user_adr` WHERE (`user_id`='".$user_id."' AND `slot`='".$slot."' AND `country`='".$_SESSION['countryDName']."')");
+    $rowCity = $db->fetchRow("SELECT * FROM `info_delivery` WHERE (`city`='".$row['city']."' AND `country`='".$_SESSION['countryDName']."')");
     if (isset($rowCity['city'])){
         if ($rowCity['country']=='ru'){
             $v = 'руб.';
