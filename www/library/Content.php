@@ -2125,6 +2125,23 @@ if ($_SESSION['show']=='desc'){
             return false;
         }
         
+        //≈сли пользователь не авторизирован, то текст ему, а не список дисков
+        if (!isset($this->auth->id)){
+            $this->tpl->assign(
+	       array(
+                   'KEYWORDS'   =>  '',
+                   'DESCRIPTION'=>  '',
+                   'TITLE'      =>  '',
+                   'HEADER'     =>  '',
+	           'CONTENT'    =>  '<div class="user_no_res_disc">
+                                        <p>ѕриобрести обучающие материалы јль€нса Ѕриллиантов можно, 
+                                        пройд€ регистрацию или авторизацию на сайте.</p>
+                                        <p><a href="/">¬ернутьс€ на главную.</a></p></div>',
+	       )
+	    );
+            return true;
+        }
+        
         $disc = $this->db->fetchRow("SELECT * FROM `discs` WHERE `id` = '$id'");
         
         if (!$disc) {
