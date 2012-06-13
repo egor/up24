@@ -51,7 +51,8 @@ $operation_xml = $_POST['operation_xml'];
 
 $xml = base64_decode($operation_xml);
 
-$merc_sign = "X5bP9JQJauTARvht83xMKNLXY2qF";
+//$merc_sign = "X5bP9JQJauTARvht83xMKNLXY2qF";
+$merc_sign = "HOk9G4GTkmyvJ7QrHciZiEcfwx1FeZLBf2CtH";
 $sign = base64_encode(sha1($merc_sign.$xml.$merc_sign,1));
 
 if ($_POST['signature'] !== $sign) {
@@ -138,7 +139,8 @@ function verifyXML($xml) {
 		exit();
 	}
 	
-	if ($merchant_id != 'i8453807395') {
+	//if ($merchant_id != 'i8453807395') {
+	if ($merchant_id != 'i5298950203') {
 	    //setError('Merchant ID is invalid\n\n');
 	    setError('Merchant ID is invalid');
 		exit();
