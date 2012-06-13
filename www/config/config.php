@@ -1,5 +1,10 @@
 <?php
-
+/*
+ * server
+ * login:   upline24ru
+ * pass:    4HUYAgxx
+ * db:      upline24ru
+ */
 $config = array(
     'database' => array(
         'adapter'   => 'PDO_MYSQL',
