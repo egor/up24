@@ -6725,82 +6725,87 @@ if ($user_add['type']=='platinum'){
         $orderVal = $this->db->fetchOne("SELECT `country` FROM `order_disc` WHERE `id` = '".$id."'");
         $top = $this->db->fetchRow("SELECT `top_user_no`, `id`, `email`, `name`, `surname` FROM `users` WHERE `id` = '".$orderId."'");
         $orderInfoCost = number_format($orderInfoCost, 0, '', ' ');
-        $subject = 'Пользователь '.$top['surname'].' '.$top['name'].' совершил покупку дисков на сумму '.$orderInfoCost.' '.($orderVal=='ru'?'руб':'грн').'/'.$orderInfoCount.' шт.';
-        $body = '<p>Пользователь '.$top['surname'].' '.$top['name'].' совершил покупку дисков на сумму '.$orderInfoCost.' '.($orderVal=='ru'?'руб':'грн').'/'.$orderInfoCount.' шт.</p>';
-        $to =''; $text='';
-        $m=0;
+        $subject = 'Активность партнеров вашей структуры';
+        $body = '
+            <p>Партнер из вашей организации '.$top['surname'].' '.$top['name'].' осуществил покупку '.$orderInfoCount.' дисков на сумму '.$orderInfoCost.' '.($orderVal=='ru'?'руб':'грн').' на официальном сайте поддержки бизнеса команды Альянса Бриллиантов www.upline24.ru.</p>
+            <p>Данное письмо было получено вами автоматически, так как вы зарегистрированы на сайте UpLine24 и являетесь спонсором пользователя '.$top['surname'].' '.$top['name'].', совершившего покупку дисков на сайте. Просмотреть историю покупок вы можете в разделе Личного кабинета «Партнеры».</p>
+            <p>Если у вас возникли вопросы, свяжитесь с нами, отправив письмо на e-mail: upline24@gmail.com, или по номерам телефонов: +7 916 95 22 195 (Россия); + 38 063 798 00 79 (Украина). Прием звонков с 10:00 до 18:00 МСК.</p>
+            <p>---</p>
+            <p>Стройте бизнес уверенно, ощущая нашу поддержку!</p>
+            <p><b>Diamond Alliance</b></p>';
         if ($top['top_user_no']!=0 AND $top['top_user_no']!=''){
             $topUserNo = $top['top_user_no'];
             if ($topUserNo>0){
                 $nextTopUserNo=$topUserNo;
                 while ($nextTopUserNo!=0){
-                    $m++;
+                    $to = '';
+                    $hello = '';
                     $NextTop = $this->db->fetchRow("SELECT `top_user_no`, `name`, `surname`, `id`, `email` FROM `users` WHERE `number` = '$nextTopUserNo'");
                     if ($NextTop['email']!='') {
-                        $text .= $NextTop['email'].' ';
-                        $to .= ($m!=1?", ":" ").$NextTop['name'].' '.$NextTop['surname']." <".$NextTop['email'].">";
+                        $to = $NextTop['name'].' '.$NextTop['surname']." <".$NextTop['email'].">";
+                        $hello = '<p>Здравствуйте, '.$NextTop['name'].'!</p>';
                     }
                     if ($NextTop['top_user_no']!=0 AND $NextTop['top_user_no']!='') {
                         $nextTopUserNo = $NextTop['top_user_no'];
                     } else {
                         $nextTopUserNo=0;
                     }
+                    $headers= "MIME-Version: 1.0\r\n";
+                    $headers .= "Content-type: text/html; charset=Windows-1251\r\n";
+                    $headers .= "From: Upline24 <Upline24@upline24.ru>\r\n";
+                    $headers .= "Cc: Upline24@upline24.ru\r\n";
+                    $headers .= "Bcc: Upline24@upline24.ru\r\n";
+                    if ($to!='')
+                        mail($to, $subject, $hello . $body, $headers);
                 }
             }
         }
-        $headers= "MIME-Version: 1.0\r\n";
-        $headers .= "Content-type: text/html; charset=Windows-1251\r\n";
-
-        $headers .= "From: Upline24 <Upline24@upline24.ru>\r\n";
-        $headers .= "Cc: Upline24@upline24.ru\r\n";
-        $headers .= "Bcc: Upline24@upline24.ru\r\n";
-        //$to .= "egor.developer@gmail.com < egor.developer@gmail.com >";
-        if ($to!='')
-            mail($to, $subject, $body, $headers);
-        }
+    }
+        
         
     /*
      * Отправка письма вышестоящим, если пользователь оплатил билеты
      */
     protected function sendMailTopUserTickets($uN,$ids){
-        //return true;
         $orderInfoCC = $this->db->fetchRow("SELECT `count`, `cost`, `user_id`, `country` FROM `tickets` WHERE `id` = '".$ids."'");
-        $userInfo =  $this->db->fetchRow("SELECT `name`, `surname`, `top_user_no` FROM `users` WHERE `id` = '".$orderInfoCC['user_id']."'");
-        
+        $userInfo =  $this->db->fetchRow("SELECT `name`, `surname`, `top_user_no` FROM `users` WHERE `id` = '".$orderInfoCC['user_id']."'");        
         $summ = $orderInfoCC['count']*$orderInfoCC['cost'];
         $summ = number_format($summ, 0, '', ' ');
         $top = $this->db->fetchRow("SELECT `top_user_no`, `id`, `email`, `name`, `surname` FROM `users` WHERE `id` = '".$orderId."'");
-        $subject = 'Пользователь '.$userInfo['surname'].' '.$userInfo['name'].' совершил покупку билетов на сумму '.$summ.' '.($orderInfoCC['country']=='ru'?'руб':'грн').'/'.$orderInfoCC['count'].' шт.';
-        $body = '<p>Пользователь '.$userInfo['surname'].' '.$userInfo['name'].' совершил покупку билетов на сумму '.$summ.' '.($orderInfoCC['country']=='ru'?'руб':'грн').'/'.$orderInfoCC['count'].' шт.</p>';
-        $to ='';
-        $m=0;
+        $subject = 'Активность партнеров вашей структуры';
+        $body = '
+            <p>Партнер из вашей организации '.$userInfo['surname'].' '.$userInfo['name'].' осуществил покупку '.$orderInfoCC['count'].' билетов на сумму '.$summ.' '.($orderInfoCC['country']=='ru'?'руб':'грн').' на официальном сайте поддержки бизнеса команды Альянса Бриллиантов www.upline24.ru.</p>
+            <p>Данное письмо было получено вами автоматически, так как вы зарегистрированы на сайте UpLine24 и являетесь спонсором пользователя '.$userInfo['surname'].' '.$userInfo['name'].', совершившего покупку билетов на сайте. Просмотреть историю покупок вы можете в разделе Личного кабинета «Партнеры».</p>
+            <p>Если у вас возникли вопросы, свяжитесь с нами, отправив письмо на e-mail: upline24@gmail.com, или по номерам телефонов: +7 916 95 22 195 (Россия); + 38 063 798 00 79 (Украина). Прием звонков с 10:00 до 18:00 МСК.</p>
+            <p>---</p>
+            <p>Стройте бизнес уверенно, ощущая нашу поддержку!</p>
+            <p><b>Diamond Alliance</b></p>';
         if ($userInfo['top_user_no']!=0 AND $userInfo['top_user_no']!=''){
             $topUserNo = $userInfo['top_user_no'];
             if ($topUserNo>0){
                 $nextTopUserNo=$topUserNo;
                 while ($nextTopUserNo!=0){
-                    $m++;
+                    $to = '';
                     $NextTop = $this->db->fetchRow("SELECT `top_user_no`, `name`, `surname`, `id`, `email` FROM `users` WHERE `number` = '$nextTopUserNo'");
                     if ($NextTop['email']!='') {
-                        $text .= $NextTop['email'].' ';
-                        $to .= ($m!=1?", ":" ").$NextTop['name'].' '.$NextTop['surname']." <".$NextTop['email'].">";
+                        $to = $NextTop['name'].' '.$NextTop['surname']." <".$NextTop['email'].">";
+                        $hello = '<p>Здравствуйте, '.$NextTop['name'].'!</p>';
                     }
                     if ($NextTop['top_user_no']!=0 AND $NextTop['top_user_no']!='') {
                         $nextTopUserNo = $NextTop['top_user_no'];
                     } else {
                         $nextTopUserNo=0;
                     }
+                    $headers= "MIME-Version: 1.0\r\n";
+                    $headers .= "Content-type: text/html; charset=Windows-1251\r\n";
+                    $headers .= "From: Upline24 <Upline24@upline24.ru>\r\n";
+                    $headers .= "Cc: Upline24@upline24.ru\r\n";
+                    $headers .= "Bcc: Upline24@upline24.ru\r\n";
+                    if ($to!='')
+                        mail($to, $subject, $hello . $body, $headers);
                 }
             }
         }
-        $headers= "MIME-Version: 1.0\r\n";
-        $headers .= "Content-type: text/html; charset=Windows-1251\r\n";
-
-        $headers .= "From: Upline24 <Upline24@upline24.ru>\r\n";
-        $headers .= "Cc: Upline24@upline24.ru\r\n";
-        $headers .= "Bcc: Upline24@upline24.ru\r\n";
-        if ($to!='')
-            mail($to, $subject, $body, $headers);
     }
     
     public function editorder(){
