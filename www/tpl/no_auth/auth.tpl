@@ -83,6 +83,7 @@
 <!-- EDP: remind_password -->
 
 <!-- BDP: restore_password -->
+<center>
 <div class="feedback_block">
     <!--<h1>Восстановление пароля</h1>-->
     <form method="post" action="/restore">
@@ -108,6 +109,7 @@
     </form>
 </div>
 <div class="clear"></div>
+</center>
 <!-- EDP: restore_password -->
 
 <!-- BDP: auth_page -->
