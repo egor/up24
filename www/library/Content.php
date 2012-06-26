@@ -2953,7 +2953,7 @@ if ($_SESSION['show']=='desc'){
         	$this->tpl->assign('CONTENT', $error);
         	return true;
         }
-        /*
+        
         if (!empty($_POST)) {
             $password = $this->getVar('password', null, $_POST);
             $confirm = $this->getVar('confirm', null, $_POST);
@@ -2961,23 +2961,24 @@ if ($_SESSION['show']=='desc'){
             if ($password !== $confirm) {
                 $error .= '<p>Введеные пароли не совпадают</p>';
             }
-        }*/
+        }
         
-        if (/*!empty($_POST) && */!$error) {
-            $p = str_replace('@', '', $user['email']);
-            $p = substr($p, 0, 6);
+        if (!empty($_POST) && !$error) {
+            //$p = str_replace('@', '', $user['email']);
+            //$p = substr($p, 0, 6);
             
             
             
             // Символы, которые будут использоваться в пароле.
-            $chars="qazxswedcvfrtgbnhyujmkiolp1234567890QAZXSWEDCVFRTGBNHYUJMKIOLP";
+            //$chars="qazxswedcvfrtgbnhyujmkiolp1234567890QAZXSWEDCVFRTGBNHYUJMKIOLP";
             // Количество символов в пароле.
-            $max=4;
+            //$max=4;
             // Определяем количество символов в $chars
-            $size=StrLen($chars)-1;
+            //$size=StrLen($chars)-1;
             // Определяем пустую переменную, в которую и будем записывать символы.
-            $password=null;
+            //$password=null;
             // Создаём пароль.
+            /*
             while($max--)
             $password.=$chars[rand(0,$size)];
             
@@ -2988,11 +2989,13 @@ if ($_SESSION['show']=='desc'){
                 'password' => crypt($p, $this->_salt),
                 'remind_code' => ''
             );
-            /*$data = array(
+             * 
+             */
+            $data = array(
                 'password' => crypt($password, $this->_salt),
                 'remind_code' => ''
             );
-            */
+            
             $this->logger->addLogRow('Смена пароля', serialize($user));
             
             $n = $this->db->update('users', $data, "id = ".$user['id']);
@@ -3002,8 +3005,8 @@ if ($_SESSION['show']=='desc'){
            $body = $this->getVar('restore_message', '<strong>Логин:</strong> %LOGIN%<br /><strong>Новый пароль:</strong> %PASSWORD%', $this->settings);
            //$body = $this->getVar('restore_message', '<strong>Логин:</strong> %LOGIN%<br /><strong>Новый пароль:</strong> '.$p, $this->settings);
            $body = str_replace("%LOGIN%", $user['email'], $body);
-           //$body = str_replace("%PASSWORD%", $password, $body);
-           $body = str_replace("%PASSWORD%", $p, $body);
+           $body = str_replace("%PASSWORD%", $password, $body);
+           //$body = str_replace("%PASSWORD%", $p, $body);
 		    
 		    $mail = new Zend_Mail('Windows-1251');
 		    $mail->setBodyHtml($body);
