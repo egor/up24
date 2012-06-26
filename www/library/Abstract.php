@@ -1365,7 +1365,7 @@ abstract class Main_Abstract
     </tr>
     <tr>
         <td><a class="mw_link" href="">Сообщить о проблеме</a></td>
-        <td><a class="mw_link mw_link_right" href="">Забыли пароль?</a></td>
+        <td><a class="mw_link mw_link_right" href="/remind">Забыли пароль?</a></td>
     </tr>
 </table>   
         </form>
